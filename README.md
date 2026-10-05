@@ -36,13 +36,6 @@ Then visit:
 - `http://localhost:8000/`
 - `http://localhost:8000/admin.html`
 
-### CMS access
-The admin panel is protected with a simple password:
-
-```text
-bricemg
-```
-
 The content is saved in the browser using `localStorage`, so this version is ideal for a lightweight prototype or personal portfolio.
 
 ### Deployment
@@ -87,13 +80,6 @@ python -m http.server 8000
 Puis ouvrez :
 - `http://localhost:8000/`
 - `http://localhost:8000/admin.html`
-
-### Accès CMS
-Le panneau d’administration est protégé par un mot de passe simple :
-
-```text
-bricemg
-```
 
 Les contenus sont enregistrés dans le navigateur via `localStorage`. Cette version est idéale pour un prototype léger ou un portfolio personnel.
 
