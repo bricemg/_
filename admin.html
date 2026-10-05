@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRICEMG / CMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@300;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="authPanel" class="auth-panel">
+      <h2>CMS Minimal</h2>
+      <div class="field">
+        <label for="secret">Clé d’accès</label>
+        <input id="secret" type="password" placeholder="Entrez la clé" />
+      </div>
+      <div class="actions">
+        <button id="loginBtn">Ouvrir le CMS</button>
+      </div>
+    </div>
+
+    <div id="adminPanel" class="admin-shell hidden">
+      <h1>Gestion du contenu</h1>
+
+      <div class="admin-grid">
+        <div>
+          <div class="field">
+            <label>Nom du site</label>
+            <input id="siteTitle" type="text" value="BRICEMG / STUDIO" />
+          </div>
+          <div class="field">
+            <label>Sous-titre</label>
+            <input id="siteSubtitle" type="text" value="DESIGN / CODE / VISION" />
+          </div>
+          <div class="field">
+            <label>Phrase d’accueil</label>
+            <textarea id="heroClaim">DES IDÉES QUI ONT UNE FORME, UNE VOIX ET UNE VITESSE.</textarea>
+          </div>
+          <div class="field">
+            <label>Introduction</label>
+            <textarea id="intro">Je crée des interfaces, des identités visuelles et des expériences web qui donnent du sens à une idée.</textarea>
+          </div>
+          <div class="field">
+            <label>À propos</label>
+            <textarea id="about">Je conçois et développe des projets à la croisée du design, du produit et du code.</textarea>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="email" type="email" value="bonjour@bricemg.dev" />
+          </div>
+        </div>
+
+        <div>
+          <div class="field">
+            <label>Carte 1 - titre</label>
+            <input id="card1Title" type="text" value="IDENTITÉ VISUELLE" />
+          </div>
+          <div class="field">
+            <label>Carte 1 - description</label>
+            <textarea id="card1Desc">Logo, charte graphique, guidelines, visual system.</textarea>
+          </div>
+
+          <div class="field">
+            <label>Carte 2 - titre</label>
+            <input id="card2Title" type="text" value="PORTFOLIO" />
+          </div>
+          <div class="field">
+            <label>Carte 2 - description</label>
+            <textarea id="card2Desc">Présentation des réalisations, des projets et des compétences.</textarea>
+          </div>
+
+          <div class="field">
+            <label>Projet 1 - titre</label>
+            <input id="proj1Title" type="text" value="SAAS / PRODUCT" />
+          </div>
+          <div class="field">
+            <label>Projet 1 - description</label>
+            <textarea id="proj1Desc">Applications, tableaux de bord, flux de travail.</textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="saveBtn">Enregistrer</button>
+        <button id="resetBtn" class="secondary">Réinitialiser</button>
+        <a href="index.html" style="display:inline-block; margin-top: 10px; color: var(--ink); text-decoration: underline;">Retour au site</a>
+      </div>
+    </div>
+
+    <script src="content.js"></script>
+    <script>
+      const ADMIN_SECRET = 'bricemg';
+      const STORAGE_KEY = 'bricemg_site_content_v1';
+
+      function getContent() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return window.defaultContent;
+        try {
+          return JSON.parse(raw);
+        } catch {
+          return window.defaultContent;
+        }
+      }
+
+      function fillForm(content) {
+        document.getElementById('siteTitle').value = content.site.title;
+        document.getElementById('siteSubtitle').value = content.site.subtitle;
+        document.getElementById('heroClaim').value = content.site.heroClaim;
+        document.getElementById('intro').value = content.site.intro;
+        document.getElementById('about').value = content.site.about;
+        document.getElementById('email').value = content.site.email;
+
+        document.getElementById('card1Title').value = content.cards[0].title;
+        document.getElementById('card1Desc').value = content.cards[0].desc;
+        document.getElementById('card2Title').value = content.cards[1].title;
+        document.getElementById('card2Desc').value = content.cards[1].desc;
+
+        document.getElementById('proj1Title').value = content.projects[0].title;
+        document.getElementById('proj1Desc').value = content.projects[0].desc;
+      }
+
+      function saveFromForm() {
+        const content = getContent();
+        const next = JSON.parse(JSON.stringify(content));
+
+        next.site.title = document.getElementById('siteTitle').value.trim() || 'BRICEMG / STUDIO';
+        next.site.subtitle = document.getElementById('siteSubtitle').value.trim() || 'DESIGN / CODE / VISION';
+        next.site.heroClaim = document.getElementById('heroClaim').value.trim();
+        next.site.intro = document.getElementById('intro').value.trim();
+        next.site.about = document.getElementById('about').value.trim();
+        next.site.email = document.getElementById('email').value.trim();
+
+        next.cards[0].title = document.getElementById('card1Title').value.trim();
+        next.cards[0].desc = document.getElementById('card1Desc').value.trim();
+        next.cards[1].title = document.getElementById('card2Title').value.trim();
+        next.cards[1].desc = document.getElementById('card2Desc').value.trim();
+
+        next.projects[0].title = document.getElementById('proj1Title').value.trim();
+        next.projects[0].desc = document.getElementById('proj1Desc').value.trim();
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        window.location.href = 'index.html';
+      }
+
+      function resetContent() {
+        localStorage.removeItem(STORAGE_KEY);
+        window.location.href = 'index.html';
+      }
+
+      function showAdmin() {
+        document.getElementById('authPanel').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+      }
+
+      document.getElementById('loginBtn').addEventListener('click', () => {
+        const value = document.getElementById('secret').value.trim();
+        if (value === ADMIN_SECRET) {
+          showAdmin();
+          fillForm(getContent());
+        } else {
+          alert('Clé incorrecte.');
+        }
+      });
+
+      document.getElementById('saveBtn').addEventListener('click', saveFromForm);
+      document.getElementById('resetBtn').addEventListener('click', resetContent);
+    </script>
+  </body>
+</html>

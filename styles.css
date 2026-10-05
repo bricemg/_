@@ -134,10 +134,6 @@ img {
   display: block;
 }
 
-.faint {
-  color: var(--ink-faint);
-}
-
 .claim {
   font-size: 13px;
   font-weight: 500;
@@ -375,8 +371,117 @@ img {
   color: var(--ink-faint);
 }
 
+.cms-link {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 50;
+  background: var(--ink-deep);
+  color: var(--on-ink);
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.admin-shell {
+  max-width: 980px;
+  margin: 48px auto;
+  padding: 24px;
+  background: var(--cell);
+  border-radius: var(--r);
+}
+
+.admin-shell h1 {
+  font-size: 26px;
+  margin-bottom: 24px;
+  font-family: var(--dot);
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.field label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1px solid var(--hair);
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font: inherit;
+  color: var(--ink);
+}
+
+.field textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+button {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  background: var(--ink-deep);
+  color: var(--on-ink);
+  font: inherit;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hair);
+}
+
+.auth-panel {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 32px;
+  background: var(--cell);
+  border-radius: var(--r);
+}
+
+.auth-panel h2 {
+  margin-bottom: 12px;
+  font-size: 22px;
+  font-family: var(--dot);
+}
+
+.hidden {
+  display: none;
+}
+
 @media (max-width: 880px) {
-  .row--three {
+  .row--three,
+  .admin-grid {
     grid-template-columns: 1fr;
   }
 
