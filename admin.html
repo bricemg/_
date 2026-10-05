@@ -13,7 +13,7 @@
     <div id="authPanel" class="auth-panel">
       <h2>CMS Minimal</h2>
       <div class="field">
-        <label for="secret">Clé d’accès</label>
+        <label for="secret">Clé d'accès</label>
         <input id="secret" type="password" placeholder="Entrez la clé" />
       </div>
       <div class="actions">
@@ -26,6 +26,7 @@
 
       <div class="admin-grid">
         <div>
+          <h3 style="margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">INFO SITE</h3>
           <div class="field">
             <label>Nom du site</label>
             <input id="siteTitle" type="text" value="BRICEMG / STUDIO" />
@@ -35,7 +36,7 @@
             <input id="siteSubtitle" type="text" value="DESIGN / CODE / VISION" />
           </div>
           <div class="field">
-            <label>Phrase d’accueil</label>
+            <label>Phrase d'accueil</label>
             <textarea id="heroClaim">DES IDÉES QUI ONT UNE FORME, UNE VOIX ET UNE VITESSE.</textarea>
           </div>
           <div class="field">
@@ -53,40 +54,21 @@
         </div>
 
         <div>
-          <div class="field">
-            <label>Carte 1 - titre</label>
-            <input id="card1Title" type="text" value="IDENTITÉ VISUELLE" />
-          </div>
-          <div class="field">
-            <label>Carte 1 - description</label>
-            <textarea id="card1Desc">Logo, charte graphique, guidelines, visual system.</textarea>
-          </div>
+          <h3 style="margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">ATELIER (CARTES)</h3>
+          <div id="cardsContainer"></div>
 
-          <div class="field">
-            <label>Carte 2 - titre</label>
-            <input id="card2Title" type="text" value="PORTFOLIO" />
-          </div>
-          <div class="field">
-            <label>Carte 2 - description</label>
-            <textarea id="card2Desc">Présentation des réalisations, des projets et des compétences.</textarea>
-          </div>
-
-          <div class="field">
-            <label>Projet 1 - titre</label>
-            <input id="proj1Title" type="text" value="SAAS / PRODUCT" />
-          </div>
-          <div class="field">
-            <label>Projet 1 - description</label>
-            <textarea id="proj1Desc">Applications, tableaux de bord, flux de travail.</textarea>
-          </div>
+          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">PROJETS</h3>
+          <div id="projectsContainer"></div>
         </div>
       </div>
 
       <div class="actions">
         <button id="saveBtn">Enregistrer</button>
         <button id="resetBtn" class="secondary">Réinitialiser</button>
-        <a href="index.html" style="display:inline-block; margin-top: 10px; color: var(--ink); text-decoration: underline;">Retour au site</a>
+        <a href="index.html" style="display:inline-block; margin-top: 10px; color: var(--ink); text-decoration: underline;">Voir le site</a>
       </div>
+
+      <div id="saveMessage" class="save-message hidden">✓ Enregistré avec succès</div>
     </div>
 
     <script src="content.js"></script>
@@ -104,6 +86,80 @@
         }
       }
 
+      function buildCardFields(content) {
+        const container = document.getElementById('cardsContainer');
+        container.innerHTML = '';
+
+        content.cards.forEach((card, index) => {
+          const section = document.createElement('div');
+          section.style.marginBottom = '24px';
+          section.style.paddingBottom = '20px';
+          section.style.borderBottom = '1px solid var(--hair)';
+
+          section.innerHTML = `
+            <div style="font-size: 10px; letter-spacing: 0.14em; color: var(--ink-faint); margin-bottom: 12px;">CARTE ${index + 1}</div>
+            <div class="field">
+              <label>Titre</label>
+              <input class="card-title" data-index="${index}" type="text" value="${card.title}" />
+            </div>
+            <div class="field">
+              <label>Code</label>
+              <input class="card-code" data-index="${index}" type="text" value="${card.code}" />
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <textarea class="card-desc" data-index="${index}">${card.desc}</textarea>
+            </div>
+            <div class="field">
+              <label>Type</label>
+              <input class="card-type" data-index="${index}" type="text" value="${card.type}" />
+            </div>
+            <div class="field">
+              <label>Statut</label>
+              <input class="card-status" data-index="${index}" type="text" value="${card.status}" />
+            </div>
+          `;
+          container.appendChild(section);
+        });
+      }
+
+      function buildProjectFields(content) {
+        const container = document.getElementById('projectsContainer');
+        container.innerHTML = '';
+
+        content.projects.forEach((project, index) => {
+          const section = document.createElement('div');
+          section.style.marginBottom = '24px';
+          section.style.paddingBottom = '20px';
+          section.style.borderBottom = '1px solid var(--hair)';
+
+          section.innerHTML = `
+            <div style="font-size: 10px; letter-spacing: 0.14em; color: var(--ink-faint); margin-bottom: 12px;">PROJET ${index + 1}</div>
+            <div class="field">
+              <label>Titre</label>
+              <input class="project-title" data-index="${index}" type="text" value="${project.title}" />
+            </div>
+            <div class="field">
+              <label>Code</label>
+              <input class="project-code" data-index="${index}" type="text" value="${project.code}" />
+            </div>
+            <div class="field">
+              <label>Description</label>
+              <textarea class="project-desc" data-index="${index}">${project.desc}</textarea>
+            </div>
+            <div class="field">
+              <label>Type</label>
+              <input class="project-type" data-index="${index}" type="text" value="${project.type}" />
+            </div>
+            <div class="field">
+              <label>Phase</label>
+              <input class="project-phase" data-index="${index}" type="text" value="${project.phase}" />
+            </div>
+          `;
+          container.appendChild(section);
+        });
+      }
+
       function fillForm(content) {
         document.getElementById('siteTitle').value = content.site.title;
         document.getElementById('siteSubtitle').value = content.site.subtitle;
@@ -112,13 +168,8 @@
         document.getElementById('about').value = content.site.about;
         document.getElementById('email').value = content.site.email;
 
-        document.getElementById('card1Title').value = content.cards[0].title;
-        document.getElementById('card1Desc').value = content.cards[0].desc;
-        document.getElementById('card2Title').value = content.cards[1].title;
-        document.getElementById('card2Desc').value = content.cards[1].desc;
-
-        document.getElementById('proj1Title').value = content.projects[0].title;
-        document.getElementById('proj1Desc').value = content.projects[0].desc;
+        buildCardFields(content);
+        buildProjectFields(content);
       }
 
       function saveFromForm() {
@@ -132,21 +183,65 @@
         next.site.about = document.getElementById('about').value.trim();
         next.site.email = document.getElementById('email').value.trim();
 
-        next.cards[0].title = document.getElementById('card1Title').value.trim();
-        next.cards[0].desc = document.getElementById('card1Desc').value.trim();
-        next.cards[1].title = document.getElementById('card2Title').value.trim();
-        next.cards[1].desc = document.getElementById('card2Desc').value.trim();
+        // Update cards
+        document.querySelectorAll('.card-title').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.cards[index].title = el.value.trim();
+        });
+        document.querySelectorAll('.card-code').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.cards[index].code = el.value.trim();
+        });
+        document.querySelectorAll('.card-desc').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.cards[index].desc = el.value.trim();
+        });
+        document.querySelectorAll('.card-type').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.cards[index].type = el.value.trim();
+        });
+        document.querySelectorAll('.card-status').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.cards[index].status = el.value.trim();
+        });
 
-        next.projects[0].title = document.getElementById('proj1Title').value.trim();
-        next.projects[0].desc = document.getElementById('proj1Desc').value.trim();
+        // Update projects
+        document.querySelectorAll('.project-title').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.projects[index].title = el.value.trim();
+        });
+        document.querySelectorAll('.project-code').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.projects[index].code = el.value.trim();
+        });
+        document.querySelectorAll('.project-desc').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.projects[index].desc = el.value.trim();
+        });
+        document.querySelectorAll('.project-type').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.projects[index].type = el.value.trim();
+        });
+        document.querySelectorAll('.project-phase').forEach(el => {
+          const index = parseInt(el.getAttribute('data-index'));
+          next.projects[index].phase = el.value.trim();
+        });
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-        window.location.href = 'index.html';
+
+        // Show save confirmation
+        const message = document.getElementById('saveMessage');
+        message.classList.remove('hidden');
+        setTimeout(() => {
+          message.classList.add('hidden');
+        }, 2000);
       }
 
       function resetContent() {
-        localStorage.removeItem(STORAGE_KEY);
-        window.location.href = 'index.html';
+        if (confirm('Êtes-vous sûr? Cela réinitialisera tout le contenu.')) {
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        }
       }
 
       function showAdmin() {
@@ -166,6 +261,13 @@
 
       document.getElementById('saveBtn').addEventListener('click', saveFromForm);
       document.getElementById('resetBtn').addEventListener('click', resetContent);
+
+      // Allow Enter key to submit login
+      document.getElementById('secret').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          document.getElementById('loginBtn').click();
+        }
+      });
     </script>
   </body>
 </html>
