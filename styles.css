@@ -134,6 +134,10 @@ img {
   display: block;
 }
 
+.faint {
+  color: var(--ink-faint);
+}
+
 .claim {
   font-size: 13px;
   font-weight: 500;
@@ -383,6 +387,12 @@ img {
   font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.cms-link:hover {
+  opacity: 0.8;
 }
 
 .admin-shell {

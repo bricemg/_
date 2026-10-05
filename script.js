@@ -1,220 +1,209 @@
-const STORAGE_KEY = 'bricemg_site_content_v1';
-const ADMIN_SECRET = 'bricemg';
+(function () {
+  const STORAGE_KEY = 'bricemg_site_content_v1';
 
-function getContent() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return window.defaultContent;
-
-  try {
-    const parsed = JSON.parse(raw);
-    return {
-      ...window.defaultContent,
-      ...parsed,
-      cards: parsed.cards || window.defaultContent.cards,
-      projects: parsed.projects || window.defaultContent.projects
-    };
-  } catch (error) {
-    return window.defaultContent;
-  }
-}
-
-function saveContent(nextContent) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(nextContent));
-}
-
-function render() {
-  const content = getContent();
-  const app = document.getElementById('app');
-
-  app.innerHTML = `
-    <div class="sheet">
-      <div class="row row--three">
-        <div class="cell">
-          <div class="cell-top"><span class="dot title">${content.site.title.split(' / ')[0]}</span></div>
-          <div class="cell-body">
-            <div class="meta">
-              <b>${content.site.title.split(' / ')[1] || 'STUDIO'}</b>
-              ${content.site.subtitle}<br />
-              INDEX V0.1<br />
-              LANGUAGE : FR
-            </div>
-          </div>
-        </div>
-
-        <div class="cell">
-          <div class="cell-top"><span class="dot title">NOUS</span></div>
-          <div class="cell-body">
-            <div class="meta">
-              <b>CRÉER</b>
-              ${content.site.intro}
-            </div>
-            <div class="meta">
-              <b>RÉFLEXION</b>
-              PENSER, CONCEVOIR ET DÉVELOPPER DE A À Z.
-            </div>
-            <div class="meta">
-              <b>OBJECTIF</b>
-              ${content.site.about}
-            </div>
-          </div>
-        </div>
-
-        <div class="cell cell--play" id="field">
-          <div class="play" aria-hidden="true"><canvas></canvas></div>
-          <div class="cell-body">
-            <p class="claim">${content.site.heroClaim}</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="bar">
-        <span class="dot">A</span>
-        <h2>ATELIER</h2>
-        <span class="count">/ ${content.cards.length}</span>
-      </div>
-      <div class="row">
-        ${content.cards.map((card, index) => `
-          <a class="cell tool" data-tool="${card.id}" data-released="2026-10-05" href="#" target="_self">
-            <div class="cell-top"><span class="dot idx">${String(index + 1).padStart(2, '0')}</span><span class="cue"></span></div>
-            <div class="name">${card.title}</div>
-            <div class="cell-body">
-              <div class="meta">
-                <span class="code">${card.code}</span>
-                <span class="desc">${card.desc}</span>
-              </div>
-              <dl class="dates">
-                <div><dt>TYPE</dt><dd>${card.type}</dd></div>
-                <div><dt>STATUT</dt><dd>${card.status}</dd></div>
-              </dl>
-              <div class="go">VOIR<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5H8.5V7.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
-            </div>
-          </a>
-        `).join('')}
-      </div>
-
-      <div class="bar">
-        <span class="dot">B</span>
-        <h2>PROJETS</h2>
-        <span class="count">/ ${content.projects.length}</span>
-      </div>
-      <div class="row">
-        ${content.projects.map((project, index) => `
-          <a class="cell tool" data-tool="${project.id}" data-released="2026-10-05" href="#" target="_self">
-            <div class="cell-top"><span class="dot idx">${String(index + 5).padStart(2, '0')}</span><span class="cue"></span></div>
-            <div class="name">${project.title}</div>
-            <div class="cell-body">
-              <div class="meta">
-                <span class="code">${project.code}</span>
-                <span class="desc">${project.desc}</span>
-              </div>
-              <dl class="dates">
-                <div><dt>TYPE</dt><dd>${project.type}</dd></div>
-                <div><dt>PHASE</dt><dd>${project.phase}</dd></div>
-              </dl>
-              <div class="go">VOIR<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5H8.5V7.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
-            </div>
-          </a>
-        `).join('')}
-      </div>
-
-      <div class="row row--three">
-        <div class="cell plate">
-          <div class="cell-top"><span class="dot idx">F</span></div>
-          <div class="label">INFO</div>
-          <div class="cell-body">
-            <div class="meta">
-              <b>ÉTAT</b>
-              CRÉATION D'UNE BASE VISUELLE ET D'UNE PREMIÈRE VERSION D'EXPOSITION.
-            </div>
-            <div class="meta">
-              <b>FOCUS</b>
-              DESIGN, DÉVELOPPEMENT, EXPÉRIMENTATION ET STORYTELLING.
-            </div>
-          </div>
-        </div>
-
-        <div class="cell plate">
-          <div class="cell-top"><span class="dot idx">G</span></div>
-          <div class="label">APPROCHE</div>
-          <div class="cell-body">
-            <div class="meta">
-              <b>PRINCIPE</b>
-              CLARTÉ, RÉPÉTITION, RYTHME, STRUCTURE ET PLAINES DE COULEUR.
-            </div>
-            <div class="meta">
-              <b>MOOD</b>
-              MINIMAL, CALME, MODERNE, UN PEU TECHNIQUE ET CURIEUX.
-            </div>
-          </div>
-        </div>
-
-        <div class="cell plate">
-          <div class="cell-top"><span class="dot idx">H</span><span class="rdot"></span></div>
-          <div class="label">CONTACT</div>
-          <div class="cell-body">
-            <div class="meta">
-              POUR UN PROJET, UNE COLLABORATION, OU UNE DISCUSSION.<br />
-              ÉCRIS À <a class="mailto" href="mailto:${content.site.email}">${content.site.email}</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="foot">
-        <span>${content.site.title.split(' / ')[0]}</span>
-        <span>${content.site.subtitle}</span>
-        <span>DESIGN / CODE / VISION</span>
-        <span>${content.site.email}</span>
-        <span>&copy; 2026</span>
-      </div>
-    </div>
-  `;
-
-  const cell = document.getElementById('field');
-  if (cell) {
-    const canvas = cell.querySelector('canvas');
-    if (canvas) {
-      const host = cell.querySelector('.play');
-      if (host) {
-        // keep existing animation logic; the rest of the site does not need rerendering.
-      }
+  function getContent() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return window.defaultContent;
+    try {
+      const parsed = JSON.parse(raw);
+      return {
+        ...window.defaultContent,
+        ...parsed,
+        cards: parsed.cards || window.defaultContent.cards,
+        projects: parsed.projects || window.defaultContent.projects
+      };
+    } catch (error) {
+      return window.defaultContent;
     }
   }
-}
 
-function bindAnimations() {
-  (function () {
-    var cell = document.getElementById('field');
+  function render() {
+    const content = getContent();
+    const app = document.getElementById('app');
+    if (!app) return;
+
+    app.innerHTML = `
+      <div class="sheet">
+        <div class="row row--three">
+          <div class="cell">
+            <div class="cell-top"><span class="dot title">${content.site.title.split(' / ')[0]}</span></div>
+            <div class="cell-body">
+              <div class="meta">
+                <b>${content.site.title.split(' / ')[1] || 'STUDIO'}</b>
+                ${content.site.subtitle}<br />
+                INDEX V0.1<br />
+                LANGUAGE : FR
+              </div>
+            </div>
+          </div>
+
+          <div class="cell">
+            <div class="cell-top"><span class="dot title">NOUS</span></div>
+            <div class="cell-body">
+              <div class="meta">
+                <b>CRÉ ER</b>
+                ${content.site.intro}
+              </div>
+              <div class="meta">
+                <b>RÉFLEXION</b>
+                PENSER, CONCEVOIR ET DÉVELOPPER DE A À Z.
+              </div>
+              <div class="meta">
+                <b>OBJECTIF</b>
+                ${content.site.about}
+              </div>
+            </div>
+          </div>
+
+          <div class="cell cell--play" id="field">
+            <div class="play" aria-hidden="true"><canvas></canvas></div>
+            <div class="cell-body">
+              <p class="claim">${content.site.heroClaim}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bar">
+          <span class="dot">A</span>
+          <h2>ATELIER</h2>
+          <span class="count">/ ${content.cards.length}</span>
+        </div>
+        <div class="row">
+          ${content.cards.map((card, index) => `
+            <a class="cell tool" data-tool="${card.id}" data-released="2026-10-05" href="#" target="_self">
+              <div class="cell-top"><span class="dot idx">${String(index + 1).padStart(2, '0')}</span><span class="cue"></span></div>
+              <div class="name">${card.title}</div>
+              <div class="cell-body">
+                <div class="meta">
+                  <span class="code">${card.code}</span>
+                  <span class="desc">${card.desc}</span>
+                </div>
+                <dl class="dates">
+                  <div><dt>TYPE</dt><dd>${card.type}</dd></div>
+                  <div><dt>STATUT</dt><dd>${card.status}</dd></div>
+                </dl>
+                <div class="go">VOIR<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5H8.5V7.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
+              </div>
+            </a>
+          `).join('')}
+        </div>
+
+        <div class="bar">
+          <span class="dot">B</span>
+          <h2>PROJETS</h2>
+          <span class="count">/ ${content.projects.length}</span>
+        </div>
+        <div class="row">
+          ${content.projects.map((project, index) => `
+            <a class="cell tool" data-tool="${project.id}" data-released="2026-10-05" href="#" target="_self">
+              <div class="cell-top"><span class="dot idx">${String(index + 5).padStart(2, '0')}</span><span class="cue"></span></div>
+              <div class="name">${project.title}</div>
+              <div class="cell-body">
+                <div class="meta">
+                  <span class="code">${project.code}</span>
+                  <span class="desc">${project.desc}</span>
+                </div>
+                <dl class="dates">
+                  <div><dt>TYPE</dt><dd>${project.type}</dd></div>
+                  <div><dt>PHASE</dt><dd>${project.phase}</dd></div>
+                </dl>
+                <div class="go">VOIR<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 8.5 8.5 3.5M4.5 3.5H8.5V7.5" fill="none" stroke="currentColor" stroke-width="1.4"/></svg></div>
+              </div>
+            </a>
+          `).join('')}
+        </div>
+
+        <div class="row row--three">
+          <div class="cell plate">
+            <div class="cell-top"><span class="dot idx">F</span></div>
+            <div class="label">INFO</div>
+            <div class="cell-body">
+              <div class="meta">
+                <b>ÉTAT</b>
+                CRÉATION D'UNE BASE VISUELLE ET D'UNE PREMIÈRE VERSION D'EXPOSITION.
+              </div>
+              <div class="meta">
+                <b>FOCUS</b>
+                DESIGN, DÉVELOPPEMENT, EXPÉRIMENTATION ET STORYTELLING.
+              </div>
+            </div>
+          </div>
+
+          <div class="cell plate">
+            <div class="cell-top"><span class="dot idx">G</span></div>
+            <div class="label">APPROCHE</div>
+            <div class="cell-body">
+              <div class="meta">
+                <b>PRINCIPE</b>
+                CLARTÉ, RÉPÉTITION, RYTHME, STRUCTURE ET PLAINES DE COULEUR.
+              </div>
+              <div class="meta">
+                <b>MOOD</b>
+                MINIMAL, CALME, MODERNE, UN PEU TECHNIQUE ET CURIEUX.
+              </div>
+            </div>
+          </div>
+
+          <div class="cell plate">
+            <div class="cell-top"><span class="dot idx">H</span><span class="rdot"></span></div>
+            <div class="label">CONTACT</div>
+            <div class="cell-body">
+              <div class="meta">
+                POUR UN PROJET, UNE COLLABORATION, OU UNE DISCUSSION.<br />
+                ÉCRIS À <a class="mailto" href="mailto:${content.site.email}">${content.site.email}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot">
+          <span>${content.site.title.split(' / ')[0]}</span>
+          <span>${content.site.subtitle}</span>
+          <span>DESIGN / CODE / VISION</span>
+          <span>${content.site.email}</span>
+          <span>&copy; 2026</span>
+        </div>
+      </div>
+
+      <a href="admin.html" class="cms-link">CMS</a>
+    `;
+  }
+
+  function initAnimation() {
+    const cell = document.getElementById('field');
     if (!cell) return;
-    var host = cell.querySelector('.play');
-    var canvas = host.querySelector('canvas');
-    var ctx = canvas.getContext('2d');
+
+    const host = cell.querySelector('.play');
+    if (!host) return;
+
+    const canvas = host.querySelector('canvas');
+    const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    var INK = '#0a0a0a';
-    var PAPER = (getComputedStyle(document.documentElement)
+    const INK = '#0a0a0a';
+    const PAPER = (getComputedStyle(document.documentElement)
       .getPropertyValue('--cell') || '#f0f0f0').trim() || '#f0f0f0';
-    var FIELD = 150;
-    var PULL = 0.20;
-    var DAMP_IDLE = 0.995;
-    var DAMP_PULL = 0.985;
-    var STEER = 0.012;
-    var VMIN = 0.16;
-    var VMAX = 0.85;
-    var VCAP = 6;
-    var EASE = 0.06;
-    var WALL = 0.98;
-    var BOUNCE = 0.85;
+    let FIELD = 150;
+    const PULL = 0.20;
+    const DAMP_IDLE = 0.995;
+    const DAMP_PULL = 0.985;
+    const STEER = 0.012;
+    const VMIN = 0.16;
+    const VMAX = 0.85;
+    const VCAP = 6;
+    const EASE = 0.06;
+    const WALL = 0.98;
+    const BOUNCE = 0.85;
 
-    var w = 0, h = 0, bodies = [], raf = 0, last = 0;
-    var pointer = { x: 0, y: 0, on: false };
-    var still = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let w = 0, h = 0, bodies = [], raf = 0, last = 0;
+    const pointer = { x: 0, y: 0, on: false };
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
     function measure() {
-      var r = host.getBoundingClientRect();
+      const r = host.getBoundingClientRect();
       w = Math.max(1, Math.round(r.width));
       h = Math.max(1, Math.round(r.height));
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = Math.round(w * dpr);
       canvas.height = Math.round(h * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -386,34 +375,26 @@ function bindAnimations() {
       pointer.on = false;
     }
 
-    function init() {
+    measure();
+    seed();
+    draw();
+
+    cell.addEventListener('pointermove', onPointerMove);
+    cell.addEventListener('pointerleave', onPointerLeave);
+    window.addEventListener('resize', function () {
       measure();
       seed();
       draw();
+    });
 
-      cell.addEventListener('pointermove', onPointerMove);
-      cell.addEventListener('pointerleave', onPointerLeave);
-      window.addEventListener('resize', function () {
-        measure();
-        seed();
-        draw();
-      });
+    if (!still.matches) start();
+  }
 
-      if (!still.matches) start();
-    }
+  // Render the page
+  render();
 
-    init();
-  })();
-}
-
-function setupAdmin() {
-  const adminButton = document.createElement('a');
-  adminButton.href = 'admin.html';
-  adminButton.textContent = 'CMS';
-  adminButton.className = 'cms-link';
-  document.body.appendChild(adminButton);
-}
-
-render();
-bindAnimations();
-setupAdmin();
+  // Wait a tick for the DOM to update, then initialize animation
+  requestAnimationFrame(() => {
+    initAnimation();
+  });
+})();
