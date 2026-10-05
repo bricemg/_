@@ -1,0 +1,14 @@
+.card-section,
+.project-section {
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--hair);
+}
+
+.field-group-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+  display: block;
+}
