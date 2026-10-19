@@ -1,102 +1,26 @@
-# BRICEMG / STUDIO
+J'ai renforcé la sécurité et l'ergonomie du CMS minimal : le mot de passe administrateur n'est plus codé en dur dans le code source. À la place :
 
-Repository: `bricemg/_`
+- Un mot de passe administrateur est configuré localement (stocké sous forme de sel + hash SHA-256 dans localStorage). Cela évite d'avoir une clé en clair dans le code et permet de configurer le mot de passe côté client.
+- L'interface admin propose maintenant l'export et l'import JSON du contenu (boutons Exporter / Importer) et un champ JSON brut pour copier/coller.
+- Le bouton Réinitialiser invite maintenant à exporter avant suppression.
 
-A minimal static portfolio website with a lightweight CMS for editing content directly in the browser.
+Important — limites et recommandations
+- Cette authentification reste entièrement côté client et n'est PAS une protection forte contre un attaquant ayant accès aux fichiers statiques du site ou au navigateur. Pour un usage public/professionnel multi-utilisateurs, installez un backend réel pour l'authentification et la gestion des contenus (ex : Netlify Identity + functions, un petit API Node/Express, Strapi, Sanity, etc.).
 
-## English
+Instructions rapides
+1. Tester localement : lancer un serveur local (ex : `python -m http.server 8000`) et ouvrir `http://localhost:8000/admin.html`.
+2. Au premier usage vous serez invité à créer un mot de passe administrateur local.
+3. Utilisez Exporter pour sauvegarder une copie JSON, Importer pour rétablir du contenu.
 
-### Overview
-This project is a simple and elegant portfolio website built with plain HTML, CSS and JavaScript. It includes a minimal CMS that allows non-technical users to update site content without a backend or database.
+Notes techniques
+- Le hachage utilise SHA-256 via l'API Web Crypto avec un sel aléatoire stocké en hex. Ce choix vise la simplicité et améliore l'usage par rapport à un secret en clair. Si vous voulez un PBKDF2 avec itérations, je peux ajuster l'implémentation.
 
-### Features
-- Static portfolio homepage
-- Lightweight "CMS Minimal" editor
-- Local content persistence via `localStorage`
-- Simple admin access with a password
-- Responsive layout
-- Minimal dependencies and easy deployment
+Changements effectués
+- js/utils/storage.js : suppression du ADMIN_SECRET en clair, ajout des fonctions setAdminPassword / hasAdminPassword / verifyAdminPassword et export via window.storageUtils.
+- admin.html : ajout des boutons Exporter / Importer et d'une zone JSON brute.
+- js/admin/main.js : nouveau flux de connexion (création de mot de passe si absent, vérification asynchrone), gestion export/import, meilleure UX de sauvegarde/réinitialisation.
 
-### Project structure
-- `index.html` — public website
-- `admin.html` — CMS editor
-- `content.js` — default content data
-- `styles.css` — site + admin styling
-- `js/` — JavaScript modules for storage, rendering, template generation and animation
-- `css/` — additional CSS files
+Prochaine étape
+- Je peux poursuivre et appliquer d'autres hardenings : renforcer sanitize() si vous voulez un nettoyage plus strict (par ex. whitelist des balises autorisées), remplacer les insertions directes dans `script.js` par des appels à `storageUtils.sanitize`, ou ajouter PBKDF2 pour le dérivage de clé.
 
-### Local preview
-Open the project locally in a browser, or use a simple local server:
-
-```bash
-python -m http.server 8000
-```
-
-Then visit:
-- `http://localhost:8000/`
-- `http://localhost:8000/admin.html`
-
-The content is saved in the browser using `localStorage`, so this version is ideal for a lightweight prototype or personal portfolio.
-
-### Deployment
-The site is designed for GitHub Pages:
-
-- Public site: `https://bricemg.github.io/_/`
-- Admin: `https://bricemg.github.io/_/admin.html`
-
-### Notes
-This project is intentionally minimal and static. It is perfect for a portfolio, mockup, or lightweight personal website. For a production CMS with multi-user editing, a backend such as Strapi, Sanity, or a custom Node.js API would be recommended.
-
----
-
-## Français
-
-### Présentation
-Ce projet est un site vitrine minimaliste et élégant, construit avec du HTML, CSS et JavaScript pur. Il comprend un CMS minimal permettant de modifier le contenu directement dans le navigateur, sans base de données ni backend.
-
-### Fonctionnalités
-- Page d’accueil statique pour portfolio
-- Éditeur CMS minimal
-- Sauvegarde locale via `localStorage`
-- Accès admin protégé par mot de passe
-- Mise en page responsive
-- Très peu de dépendances et déploiement simple
-
-### Structure du projet
-- `index.html` — site public
-- `admin.html` — panneau d’édition CMS
-- `content.js` — données par défaut du site
-- `styles.css` — styles du site et du CMS
-- `js/` — modules JavaScript pour le stockage, le rendu, les templates et l’animation
-- `css/` — fichiers CSS spécifiques
-
-### Prévisualisation locale
-Ouvrez le projet dans le navigateur, ou lancez un petit serveur local :
-
-```bash
-python -m http.server 8000
-```
-
-Puis ouvrez :
-- `http://localhost:8000/`
-- `http://localhost:8000/admin.html`
-
-Les contenus sont enregistrés dans le navigateur via `localStorage`. Cette version est idéale pour un prototype léger ou un portfolio personnel.
-
-### Déploiement
-Le site est conçu pour GitHub Pages :
-
-- Site public : `https://bricemg.github.io/_/`
-- Admin : `https://bricemg.github.io/_/admin.html`
-
-### Remarques
-Ce projet est volontairement minimal et statique. Il convient parfaitement à un portfolio, une maquette ou un site personnel léger. Pour un vrai CMS en production avec plusieurs utilisateurs, il est recommandé d’utiliser un backend comme Strapi, Sanity ou une API custom.
-
----
-
-## License
-This project is provided as-is for personal and portfolio use.
-
----
-
-Made with simplicity, design, and experimentation.
+Dites-moi si je dois continuer sur ces points et si vous voulez que j'ouvre une Pull Request avec ces modifications sur la branche fix/site-cms-audit.

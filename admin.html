@@ -64,55 +64,34 @@
             </select>
           </div>
           <div class="field">
-            <label>Background color</label>
+            <label>Couleur fond</label>
             <input id="themeBg" type="color" value="#e3e3e3" />
           </div>
           <div class="field">
-            <label>Card color</label>
+            <label>Couleur cellule</label>
             <input id="themeCell" type="color" value="#f0f0f0" />
-          </div>
-          <div class="field">
-            <label>Text color</label>
-            <input id="themeInk" type="color" value="#2e2e2e" />
-          </div>
-          <div class="field">
-            <label>Accent color</label>
-            <input id="themeAccent" type="color" value="#d71921" />
-          </div>
-          <div class="field">
-            <label>Radius (px)</label>
-            <input id="themeRadius" type="number" value="22" />
-          </div>
-          <div class="field">
-            <label>Gap (px)</label>
-            <input id="themeGap" type="number" value="10" />
-          </div>
-          <div class="field">
-            <label>Title size (px)</label>
-            <input id="themeTitleSize" type="number" value="38" />
-          </div>
-          <div class="field">
-            <label>Text size (px)</label>
-            <input id="themeTextSize" type="number" value="13" />
           </div>
         </div>
 
         <div>
-          <h3 style="margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">ATELIER (CARTES)</h3>
-          <div id="cardsContainer"></div>
-
-          <h3 style="margin-top: 32px; margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">PROJETS</h3>
-          <div id="projectsContainer"></div>
+          <!-- zone pour listes de cartes / projets (simplifiée ici) -->
+          <h3 style="margin-bottom: 8px; font-size: 14px; letter-spacing: 0.14em;">CONTENU</h3>
+          <div class="field">
+            <label>JSON brut (pour import/export rapide)</label>
+            <textarea id="rawContent" style="height: 220px; font-family: monospace;"></textarea>
+          </div>
         </div>
       </div>
 
-      <div class="actions">
+      <div class="admin-actions" style="margin-top:18px; display:flex; gap:8px; align-items:center;">
         <button id="saveBtn">Enregistrer</button>
-        <button id="resetBtn" class="secondary">Réinitialiser</button>
-        <a href="index.html" style="display:inline-block; margin-top: 10px; color: var(--ink); text-decoration: underline;">Voir le site</a>
+        <button id="exportBtn">Exporter</button>
+        <button id="importBtn">Importer</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none" />
+        <button id="resetBtn">Réinitialiser</button>
+        <div id="saveMessage" class="hidden" style="margin-left:12px;">Enregistré ✓</div>
       </div>
 
-      <div id="saveMessage" class="save-message hidden">✓ Enregistré avec succès</div>
     </div>
 
     <script src="content.js"></script>
