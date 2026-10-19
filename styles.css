@@ -1,0 +1,48 @@
+/* Layout variants and theme-driven adjustments */
+
+.sheet[data-layout="grid"] .cards-row,
+.sheet[data-layout="grid"] .projects-row {
+  grid-auto-flow: row;
+}
+
+/* Bento: emphasize first card */
+.sheet[data-layout="bento"] .cards-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--gap);
+}
+.sheet[data-layout="bento"] .cards-row .cell:nth-child(1) {
+  grid-column: 1 / span 2;
+}
+
+/* Masonry: use column layout for a masonry effect */
+.sheet[data-layout="masonry"] .cards-row,
+.sheet[data-layout="masonry"] .projects-row {
+  column-count: 3;
+  column-gap: var(--gap);
+}
+.sheet[data-layout="masonry"] .cell {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: var(--gap);
+}
+
+/* Metro: grid with variable row/column spans */
+.sheet[data-layout="metro"] .cards-row {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 110px;
+  gap: var(--gap);
+}
+.sheet[data-layout="metro"] .cards-row .cell:nth-child(1) { grid-column: span 3; grid-row: span 2; }
+.sheet[data-layout="metro"] .cards-row .cell:nth-child(2) { grid-column: span 2; grid-row: span 1; }
+.sheet[data-layout="metro"] .cards-row .cell:nth-child(3) { grid-column: span 1; grid-row: span 2; }
+
+/* Use theme variables for typography */
+.title { font-size: clamp(26px, 3.6vw, var(--title-size, 38px)); }
+.claim { font-size: var(--text-size, 13px); }
+
+/* Colors: prefer CSS variables already in :root */
+:root {
+  /* defaults are in styles.css base file */
+}

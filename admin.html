@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BRICEMG / CMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Doto:wght@300;500;700;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="css/admin-sections.css" />
+  </head>
+  <body>
+    <div id="authPanel" class="auth-panel">
+      <h2>CMS Minimal</h2>
+      <div class="field">
+        <label for="secret">Clé d'accès</label>
+        <input id="secret" type="password" placeholder="Entrez la clé" />
+      </div>
+      <div class="actions">
+        <button id="loginBtn">Ouvrir le CMS</button>
+      </div>
+    </div>
+
+    <div id="adminPanel" class="admin-shell hidden">
+      <h1>Gestion du contenu</h1>
+
+      <div class="admin-grid">
+        <div>
+          <h3 style="margin-bottom: 16px; font-size: 14px; letter-spacing: 0.14em;">INFO SITE</h3>
+          <div class="field">
+            <label>Nom du site</label>
+            <input id="siteTitle" type="text" value="BRICEMG / STUDIO" />
+          </div>
+          <div class="field">
+            <label>Sous-titre</label>
+            <input id="siteSubtitle" type="text" value="DESIGN / CODE / VISION" />
+          </div>
+          <div class="field">
+            <label>Phrase d'accueil</label>
+            <textarea id="heroClaim">DES IDÉES QUI ONT UNE FORME, UNE VOIX ET UNE VITESSE.</textarea>
+          </div>
+          <div class="field">
+            <label>Introduction</label>
+            <textarea id="intro">Je crée des interfaces, des identités visuelles et des expériences web qui donnent du sens à une idée.</textarea>
+          </div>
+          <div class="field">
+            <label>À propos</label>
+            <textarea id="about">Je conçois et développe des projets à la croisée du design, du produit et du code.</textarea>
+          </div>
+          <div class="field">
+            <label>Email</label>
+            <input id="email" type="email" value="bonjour@bricemg.dev" />
+          </div>
+
+          <h3 style="margin-top: 18px; margin-bottom: 8px; font-size: 14px; letter-spacing: 0.14em;">THEME</h3>
+          <div class="field">
+            <label>Layout</label>
+            <select id="themeLayout">
+              <option value="grid">Grid</option>
+              <option value="bento">Bento</option>
+              <option value="masonry">Masonry</option>
+              <option value="metro">Metro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Couleur fond</label>
+            <input id="themeBg" type="color" value="#e3e3e3" />
+          </div>
+          <div class="field">
+            <label>Couleur cellule</label>
+            <input id="themeCell" type="color" value="#f0f0f0" />
+          </div>
+        </div>
+
+        <div>
+          <!-- zone pour listes de cartes / projets (simplifiée ici) -->
+          <h3 style="margin-bottom: 8px; font-size: 14px; letter-spacing: 0.14em;">CONTENU</h3>
+          <div class="field">
+            <label>JSON brut (pour import/export rapide)</label>
+            <textarea id="rawContent" style="height: 220px; font-family: monospace;"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-actions" style="margin-top:18px; display:flex; gap:8px; align-items:center;">
+        <button id="saveBtn">Enregistrer</button>
+        <button id="exportBtn">Exporter</button>
+        <button id="importBtn">Importer</button>
+        <input id="importFile" type="file" accept="application/json" style="display:none" />
+        <button id="resetBtn">Réinitialiser</button>
+        <div id="saveMessage" class="hidden" style="margin-left:12px;">Enregistré ✓</div>
+      </div>
+
+    </div>
+
+    <script src="content.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/admin/form.js"></script>
+    <script src="js/admin/main.js"></script>
+  </body>
+</html>
