@@ -5,7 +5,18 @@ const defaultContent = {
     heroClaim: 'DES IDÉES QUI ONT UNE FORME, UNE VOIX ET UNE VITESSE.',
     intro: 'Je crée des interfaces, des identités visuelles et des expériences web qui donnent du sens à une idée.',
     about: 'Je conçois et développe des projets à la croisée du design, du produit et du code.',
-    email: 'bonjour@bricemg.dev'
+    email: 'bonjour@bricemg.dev',
+    theme: {
+      layout: 'grid', // options: grid, bento, masonry, metro
+      bg: '#e3e3e3',
+      cell: '#f0f0f0',
+      ink: '#2e2e2e',
+      accent: '#d71921',
+      radius: 22, // px
+      gap: 10, // px
+      titleSize: 38, // px max, used as clamp max
+      textSize: 13 // px
+    }
   },
   cards: [
     {

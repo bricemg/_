@@ -1,5 +1,3 @@
-// Admin authentication and initialization
-
 (function () {
   const { ADMIN_SECRET, getContent, saveContent } = window.storageUtils;
   const { collectFormData, fillForm } = window.adminForm;

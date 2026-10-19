@@ -11,6 +11,18 @@ function collectFormData(content) {
   next.site.about = document.getElementById('about').value.trim();
   next.site.email = document.getElementById('email').value.trim();
 
+  // Theme
+  next.site.theme = next.site.theme || {};
+  next.site.theme.layout = document.getElementById('themeLayout').value;
+  next.site.theme.bg = document.getElementById('themeBg').value;
+  next.site.theme.cell = document.getElementById('themeCell').value;
+  next.site.theme.ink = document.getElementById('themeInk').value;
+  next.site.theme.accent = document.getElementById('themeAccent').value;
+  next.site.theme.radius = parseInt(document.getElementById('themeRadius').value) || 22;
+  next.site.theme.gap = parseInt(document.getElementById('themeGap').value) || 10;
+  next.site.theme.titleSize = parseInt(document.getElementById('themeTitleSize').value) || 38;
+  next.site.theme.textSize = parseInt(document.getElementById('themeTextSize').value) || 13;
+
   // Collect all card fields
   const cardFields = ['title', 'code', 'desc', 'type', 'status'];
   cardFields.forEach(field => {
@@ -109,6 +121,18 @@ function fillForm(content) {
   document.getElementById('intro').value = content.site.intro;
   document.getElementById('about').value = content.site.about;
   document.getElementById('email').value = content.site.email;
+
+  // Theme
+  const theme = content.site.theme || {};
+  document.getElementById('themeLayout').value = theme.layout || 'grid';
+  document.getElementById('themeBg').value = theme.bg || '#e3e3e3';
+  document.getElementById('themeCell').value = theme.cell || '#f0f0f0';
+  document.getElementById('themeInk').value = theme.ink || '#2e2e2e';
+  document.getElementById('themeAccent').value = theme.accent || '#d71921';
+  document.getElementById('themeRadius').value = theme.radius || 22;
+  document.getElementById('themeGap').value = theme.gap || 10;
+  document.getElementById('themeTitleSize').value = theme.titleSize || 38;
+  document.getElementById('themeTextSize').value = theme.textSize || 13;
 
   buildCardFieldsHTML(content);
   buildProjectFieldsHTML(content);

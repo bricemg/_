@@ -44,9 +44,10 @@ function buildPageHTML(content) {
   const siteTitleParts = content.site.title.split(' / ');
   const siteNamespace = siteTitleParts[0];
   const siteType = siteTitleParts[1] || 'STUDIO';
+  const layout = (content.site.theme && content.site.theme.layout) || 'grid';
 
   return `
-    <div class="sheet">
+    <div class="sheet" data-layout="${sanitize(layout)}">
       <div class="row row--three">
         <div class="cell">
           <div class="cell-top"><span class="dot title">${sanitize(siteNamespace)}</span></div>
@@ -91,7 +92,7 @@ function buildPageHTML(content) {
         <h2>ATELIER</h2>
         <span class="count">/ ${content.cards.length}</span>
       </div>
-      <div class="row">
+      <div class="row cards-row">
         ${content.cards.map((card, idx) => buildCardHTML(card, idx)).join('')}
       </div>
 
@@ -100,7 +101,7 @@ function buildPageHTML(content) {
         <h2>PROJETS</h2>
         <span class="count">/ ${content.projects.length}</span>
       </div>
-      <div class="row">
+      <div class="row projects-row">
         ${content.projects.map((project, idx) => buildProjectHTML(project, idx)).join('')}
       </div>
 
